@@ -1,0 +1,10 @@
+import express from "express";
+import subscriptionController from "../controllers/subscription";
+import auth from "../middlewares/auth";
+import validate from "../middlewares/express_validator";
+const routes = express();
+routes.post("/sendSubcriptionRequest", auth.auth, auth.isStudent, subscriptionController.sendSubcriptionRequest);
+routes.post("/confirmSubscription", auth.auth, auth.isRole, subscriptionController.confirmSubscription);
+routes.post("/rejectSubscription", auth.auth, auth.isRole, subscriptionController.rejectSubscription);
+routes.post("/clearNotification", auth.auth, auth.isRole, subscriptionController.clearNotification);
+export default routes;

@@ -1,0 +1,18 @@
+import express from "express";
+import multer from "multer";
+import quizController from "../controllers/quizController";
+import auth from "../middlewares/auth";
+import validate from "../middlewares/express_validator";
+const routes = express();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+routes.post("/addQuiz", auth.auth, quizController.addQuiz);
+routes.post("/getOneQuiz", auth.auth, validate.getOneQuiz, quizController.getOneQuiz);
+routes.post("/answerQuiz", auth.auth, auth.isStudent, validate.answerQuiz, quizController.answerQuiz);
+routes.post("/submitQuizGetMarks", auth.auth, validate.submitQuizGetMarks, quizController.submitQuizGetMarks);
+routes.post("/submissionExist", auth.auth, quizController.submissionExist);
+routes.patch("/editQuiz", auth.auth, auth.isInstructor, quizController.editQuiz);
+routes.post("/deleteQuestion", auth.auth, auth.isInstructor, quizController.deleteQuestion);
+routes.post("/deleteQuiz", auth.auth, auth.isInstructor, quizController.deleteQuiz);
+routes.post("/getAllQuiz", auth.auth, auth.isInstructor, quizController.getAllQuiz);
+export default routes;

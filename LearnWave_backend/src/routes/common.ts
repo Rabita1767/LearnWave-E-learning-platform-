@@ -1,0 +1,12 @@
+import express from "express";
+import multer from "multer";
+import commonController from "../controllers/commonController";
+import validate from "../middlewares/express_validator";
+import auth from "../middlewares/auth";
+const routes = express();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+routes.get("/viewProfile", validate.login, commonController.viewProfile);
+routes.patch("/editProfile", auth.auth, auth.isCommon, validate.editProfile, commonController.editProfile);
+routes.get("/getAllCourse", commonController.getAllCourse);
+export default routes;
