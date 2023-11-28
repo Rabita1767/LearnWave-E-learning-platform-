@@ -30,6 +30,19 @@ export class adminService {
         let rejectCourseURL: string = `${this.BaseUrl}/rejectCourse`
         return axiosInstance.post(rejectCourseURL, data);
     }
+    public static studentCount() {
+        let studentCountURL: string = `${this.BaseUrl}/studentCount`
+        return axiosInstance.get(studentCountURL);
+    }
+    public static courseCount() {
+        let courseCountURL: string = `${this.BaseUrl}/courseCount`
+        return axiosInstance.get(courseCountURL);
+    }
+    public static getAllStudent() {
+        let getAllStudentURL: string = `${this.BaseUrl}/getAllStudent`
+        return axiosInstance.get(getAllStudentURL);
+    }
+
 
 
 

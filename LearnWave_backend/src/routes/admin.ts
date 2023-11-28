@@ -24,4 +24,7 @@ routes.delete("/deleteCourseAdmin", auth.auth, auth.isRole, validate.deleteCours
 routes.post("/viewCart", adminController.viewCart);
 routes.post("/getInstructor", auth.auth, auth.isRole, adminController.getInstructor);
 routes.post("/getCourseById", auth.auth, adminController.getCourseById);
+routes.get("/studentCount", adminController.studentCount);
+routes.get("/courseCount", adminController.courseCount);
+routes.get("/getAllStudent", adminController.getAllStudent);
 export default routes;

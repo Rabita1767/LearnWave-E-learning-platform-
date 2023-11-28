@@ -29,7 +29,7 @@ const InstructorHome: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="h-40 w-[90%] border border-2 ml-[70px]">Course View</div>
+                    {/* <div className="h-40 w-[90%] border border-2 ml-[70px]">Course View</div> */}
                 </div>
 
             </div>

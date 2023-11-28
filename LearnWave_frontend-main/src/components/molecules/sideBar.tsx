@@ -1,6 +1,6 @@
 import ImageComponent from "../atoms/imageAtom";
 import logo from "../../assets/Logo1.png";
-import { DASHBOARD_SIDEBAR_LINKS, DASHBOARD_SIDEBAR_BOTTOM_LINKS, DASHBOARD_SIDEBAR_INSTRUCTOR_LINKS } from "../../lib/constants/navigation";
+import { DASHBOARD_SIDEBAR_LINKS, DASHBOARD_SIDEBAR_INSTRUCTOR_LINKS } from "../../lib/constants/navigation";
 import SideBarLink from "../atoms/sideBarLink";
 import React from "react";
 import { HiOutlineLogout } from "react-icons/hi";
@@ -40,9 +40,7 @@ const SideBar: React.FC = () => {
                 </div>
             )}
             <div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">
-                {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (
-                    <SideBarLink key={item.key} item={item} />
-                ))}
+
                 <div className={`cursor-pointer ${linkClass}`} onClick={onLogout}>
                     <span>
                         <HiOutlineLogout />

@@ -518,6 +518,25 @@ class Admin {
             return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, "Internal Server Error!");
         }
     }
+    public async studentCount(req: CustomRequest, res: Response): Promise<void> {
+        const findStudent = await studentModel.find({});
+        const count = findStudent.length;
+        return sendResponse(res, HTTP_STATUS.OK, "Data fetched successfully!", { total: count });
+    }
+    public async courseCount(req: CustomRequest, res: Response): Promise<void> {
+        const findStudent = await courseModel.find({ isApproved: true });
+        const count = findStudent.length;
+        return sendResponse(res, HTTP_STATUS.OK, "Data fetched successfully!", { total: count });
+    }
+    public async getAllStudent(req: CustomRequest, res: Response): Promise<void> {
+        try {
+            const findAll = await studentModel.find({});
+            return sendResponse(res, HTTP_STATUS.OK, "Found", findAll);
+
+        } catch (error) {
+            return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, "Internal Server Error!");
+        }
+    }
 
 
 }

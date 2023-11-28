@@ -45,6 +45,7 @@ import InstructorProfile from "./components/pages/instructorProfile";
 import CommonHome from "./components/pages/commonHome";
 import InstructorSignup from "./components/organisms/instructorSignup";
 import InstructorAuth from "./util/instructorAuth";
+import StudentAuth from "./util/studentAuth";
 function App() {
     return (
         <>
@@ -64,13 +65,12 @@ function App() {
                     <Route path="/viewAllCourse/:courseId/subsection/:subsectionId" element={<Video />} />
                     <Route path="/viewAllCourse/:courseId/quiz/:quizId" element={<Quiz />} />
                     <Route path="/viewAllCourse/:courseId/assignment/:assignmentId" element={<Assignment />} />
-                    <Route path="/cart" element={<Cart />} />
+
                     <Route path="/transaction" element={<Transaction />} />
 
-                    <Route path="/addCourse/title" element={<AddCourse1 />} />
-                    <Route path="/addCourse/description" element={<AddCourse2 />} />
-                    <Route path="/addCourse/category" element={<AddCourse3 />} />
-                    <Route path="/addCourse" element={<AddCourse />} />
+
+
+
                     <Route path="/viewSubsection/:sectionId/:courseId" element={<ViewSubsection />} />
                     <Route path="/editQuiz/:courseId/:quizId" element={<EditQuiz />} />
                     <Route path="/edited/:courseId/:quizId" element={<ViewEditedQuiz />} />
@@ -82,10 +82,16 @@ function App() {
                     <Route path="/enrolledCourses" element={<EnrolledCourse />} />
                     <Route path="/view/:courseId" element={<ViewUnenrolledDetails />} />
                     <Route path="/loader" element={<PageLoader />} />
-
+                    <Route element={<StudentAuth />} >
+                        <Route path="/cart" element={<Cart />} />
+                    </Route>
 
                     <Route element={<InstructorAuth />}>
                         <Route path="/instructorHome" element={<InstructorHome />} />
+                        <Route path="/addCourse/title" element={<AddCourse1 />} />
+                        <Route path="/addCourse/description" element={<AddCourse2 />} />
+                        <Route path="/addCourse/category" element={<AddCourse3 />} />
+                        <Route path="/addCourse" element={<AddCourse />} />
                         <Route path="/instructor/course" element={<InstructorAllCourse />} />
                         <Route path="/profile" element={<InstructorProfile />} />
                         <Route path="/addCourse/:courseId" element={<AddContent />} />

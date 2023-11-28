@@ -1,6 +1,13 @@
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { adminService } from '../../api/adminService';
+import { DataEntity } from '../../interfaces/student';
+import { useState, useEffect } from "react";
 const Table = () => {
+    const [state, setState] = useState({
+        loading: false,
+        data: [] as DataEntity[]
+    })
     const recentOrderData = [
         {
             id: '1',
@@ -63,6 +70,22 @@ const Table = () => {
             shipment_address: 'Los Angeles, CA 90017'
         }
     ]
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await adminService.getAllStudent();
+                console.log(response.data.data);
+                if (response.data.success) {
+                    setState({ ...state, loading: false, data: response.data.data })
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+
+    }, [])
 
     return (
         <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
@@ -72,30 +95,30 @@ const Table = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Product ID</th>
-                            <th>Customer Name</th>
-                            <th>Order Date</th>
-                            <th>Order Total</th>
-                            <th>Shipping Address</th>
-
+                            <th>Name</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {recentOrderData.map((order) => (
-                            <tr key={order.id}>
+                        {state.data.map((order) => (
+                            <tr key={order._id}>
                                 <td>
-                                    <Link to={`/order/${order.id}`}>#{order.id}</Link>
+                                    <Link to={`/order/${order._id}`}>#{order._id}</Link>
                                 </td>
                                 <td>
-                                    <Link to={`/product/${order.product_id}`}>#{order.product_id}</Link>
+                                    <Link to={`/product/${order.product_id}`}>#{order.name}</Link>
                                 </td>
                                 <td>
-                                    <Link to={`/customer/${order.customer_id}`}>{order.customer_name}</Link>
+                                    <Link to={`/customer/${order.customer_id}`}>{order.userName}</Link>
                                 </td>
-                                <td>{format(new Date(order.order_date), 'dd MMM yyyy')}</td>
-                                <td>{order.order_total}</td>
-                                <td>{order.shipment_address}</td>
-
+                                <td>
+                                    <Link to={`/customer/${order.customer_id}`}>{order.email}</Link>
+                                </td>
+                                <td>
+                                    <Link to={`/customer/${order.customer_id}`}>{order.phoneNumber}</Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
