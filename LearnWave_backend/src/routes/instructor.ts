@@ -16,6 +16,8 @@ routes.post("/addSection", auth.auth, auth.isInstructor, validate.addSection, in
 routes.post("/sendCourseAddrequest", auth.auth, auth.isInstructor, instructorController.sendCourseAddrequest);
 routes.get("/getCourseNotification", auth.auth, auth.isInstructor, instructorController.getCourseNotification);
 routes.post("/uploadVideo", auth.auth, validate.uploadVideo, upload.single("file"), instructorController.uploadVideo);
+routes.post("/uploadAssignment", auth.auth, auth.isStudent, upload.single("file"), instructorController.uploadAssignment);
+
 routes.post("/getVideo", instructorController.getVideo);
 routes.post("/addAssignment", auth.auth, auth.isInstructor, validate.addAssignment, instructorController.addAssignment);
 routes.post("/getSubsectionById", auth.auth, auth.isInstructor, instructorController.getSubsectionById);

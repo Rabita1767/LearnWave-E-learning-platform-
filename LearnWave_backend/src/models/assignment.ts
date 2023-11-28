@@ -11,11 +11,13 @@ const assignmentSchema = new mongoose.Schema<IAssignment>({
     set_course_id:
     {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "Course"
     },
     set_section_id:
     {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "Section"
     },
     title:
     {

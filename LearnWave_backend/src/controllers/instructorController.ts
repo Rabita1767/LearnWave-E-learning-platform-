@@ -16,6 +16,7 @@ import studentVerificationModel from "../models/studentVerification";
 import notificationModel from "../models/notification";
 import quizModel from "../models/quiz";
 import assignmentModel from "../models/assignment";
+import assignmentSubModel from "../models/assignmentSubmission"
 import findAuth from "../util/findAuth";
 import getAll from "../util/get";
 import { validationResult } from "express-validator";
@@ -201,10 +202,6 @@ class Instructor {
         try {
             const { section_id, title, course_id } = req.body;
             console.log(req.file);
-            const isLoggedIn = findAuth.findInstructor(req);
-            if (!isLoggedIn) {
-                return sendResponse(res, HTTP_STATUS.NOT_FOUND, "Please sign up or log in first!");
-            }
             const params: S3UploadParams =
             {
                 Bucket: bucketName,
@@ -227,6 +224,32 @@ class Instructor {
             sectionExist.subSection.push(saveVideo._id);
             await sectionExist.save();
             return sendResponse(res, HTTP_STATUS.OK, "Successfully uploaded!", saveVideo);
+
+        } catch (error) {
+            console.log(error);
+            return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, "Internal Server Error!");
+        }
+    }
+    public async uploadAssignment(req: CustomRequest, res: Response): Promise<void> {
+        try {
+            const { course_id, assignment_id } = req.body;
+            console.log(req.file);
+            const params: S3UploadParams =
+            {
+                Bucket: bucketName,
+                Key: crypto.randomBytes(32).toString("hex"),
+                Body: req.file.buffer
+            }
+            const command = new PutObjectCommand(params);
+            await s3.send(command);
+            const saveAssignment = new assignmentSubModel({
+                set_course_id: course_id,
+                assignment_id: assignment_id,
+                student_id: req.userId,
+                assignmentURL: "https://bucket-rabita.s3.eu-west-3.amazonaws.com/" + params.Key,
+            })
+            await saveAssignment.save();
+            return sendResponse(res, HTTP_STATUS.OK, "Successfully uploaded!", saveAssignment);
 
         } catch (error) {
             console.log(error);

@@ -15,4 +15,10 @@ export class studentService {
         let authURL: string = `${this.BaseUrl}/login`
         return axiosInstance.post(authURL, formData);
     }
+
+    public static getAssignmentById(formData: any) {
+        let getAssignmentByIdURL: string = `${this.BaseUrl}/getAssignmentById`
+        return axiosInstance.post(getAssignmentByIdURL, formData);
+    }
 }
+

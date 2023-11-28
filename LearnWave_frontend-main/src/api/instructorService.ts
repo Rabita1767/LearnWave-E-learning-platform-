@@ -57,6 +57,10 @@ export class instructorService {
         let getInstructorByIdURL: string = `${this.BaseUrl}/getInstructorById`
         return axiosInstance.get(getInstructorByIdURL);
     }
+    public static uploadAssignment(formdata: any) {
+        let uploadAssignmentURL: string = `${this.BaseUrl}/uploadAssignment`
+        return axiosInstance.post(uploadAssignmentURL, formdata);
+    }
 
 
 

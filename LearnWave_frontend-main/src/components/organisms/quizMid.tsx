@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Button from "../atoms/button";
 import { SubmissionQuiz, QData } from "../../interfaces/quiz";
 import { useSelector } from "react-redux";
+import { Modal } from 'flowbite-react';
+import { useNavigate } from "react-router-dom";
 interface IData {
     loading: boolean,
     data: Data,
@@ -16,6 +18,8 @@ interface IQData {
     errorMsg: string
 }
 const QuizMid = () => {
+    const navigate = useNavigate();
+    const [openModal, setOpenModal] = useState(false);
     const userRole = useSelector((state) => state.auth.role);
     const { quizId, courseId } = useParams();
     const [state, setState] = useState<IData>({
@@ -93,7 +97,8 @@ const QuizMid = () => {
                 const response = await quizService.submitQuizGetMarks(data);
                 console.log(response.data);
                 if (response.data.success) {
-                    setSubmission({ ...submission, loading: false, data: response.data.data })
+                    setSubmission({ ...submission, loading: false, data: response.data.data });
+                    setOpenModal(true)
                     console.log(response.data.data);
                 }
 
@@ -146,9 +151,14 @@ const QuizMid = () => {
     console.log(quizId);
     console.log(flag);
     console.log(quizState.Qdata.questions);
+    const handleModal = () => {
+        setOpenModal(false);
+        navigate("/");
+    }
     return (
         <>
-            <div className={!flag ? "hidden" : ""}>
+            {/* <div className={!flag ? "hidden" : "mx-[100px]"}> */}
+            <div className={`flex justify-center ${!flag ? "hidden" : "mx-[100px] text-[28px] font-[500]"}`}>
                 <>Already submitted the quiz</>
             </div>
             <div className={flag ? "hidden" : "w-[80%] mx-auto border-2 border-gray-500 border-opacity-40 rounded-lg pt-8"}>
@@ -165,9 +175,26 @@ const QuizMid = () => {
                     </div>
                 ))}
             </div>
+            <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+                <Modal.Header />
+                <Modal.Body>
+                    <div className="text-center">
+                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            <p className="text-[20px]">You have got :  {submission.data.totalMarks}</p>
+
+                        </h3>
+                        <div className="flex justify-center gap-4">
+                            <Button color="failure" onClick={handleModal} className="h-[50px] w-[300px] p-2 mt-8  rounded-custom border-2 border-custom bg-customButton text-customWhiteText text-customFont font-customWeight">
+                                {"Done"}
+                            </Button>
+
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
             {userRole !== 1 && (
                 <div className="ml-[640px] pb-[20px]">
-                    <Button children="Submit" className="h-[50px] w-[380px] p-2 mt-[40px] rounded-custom border-2 border-custom bg-customButton text-customWhiteText text-customFont font-customWeight" onClick={handleSubmitQuiz} />
+                    <Button children="Submit" className={!flag ? "h-[50px] w-[300px] p-2 mt-8  rounded-custom border-2 border-custom bg-customButton text-customWhiteText text-customFont font-customWeight" : "hidden"} onClick={handleSubmitQuiz} />
                 </div>
             )}
         </>

@@ -17,6 +17,7 @@ import mongoose from "mongoose";
 import { Document, Types } from "mongoose";
 import findAuth from "../util/findAuth";
 import get from "../util/get";
+import assignmentModel from "../models/assignment";
 interface CustomRequest extends Request {
     userId: ObjectId;
 }
@@ -187,10 +188,7 @@ class Student {
 
     async viewSubscriptionNotification(req: CustomRequest, res: Response): Promise<void> {
         try {
-            const isLoggedIn = findAuth.findStudent(req);
-            if (!isLoggedIn) {
-                return sendResponse(res, HTTP_STATUS.NOT_FOUND, "Please sign up or log in!");
-            }
+
             const findAllNotification = await notificationModel.find({ $and: [{ receiver: req.userId }, { forAdmin: false }, { read: false }] });
             if (findAllNotification.length == 0) {
                 return sendResponse(res, HTTP_STATUS.NOT_FOUND, "No notifications were found!");
@@ -202,7 +200,24 @@ class Student {
             return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, "Internal Server Error!");
         }
     }
+    public async getAssignmentById(req: CustomRequest, res: Response): Promise<void> {
+        try {
+            const { assignment_id } = req.body;
+            const findAssignment = await assignmentModel.findById({ _id: assignment_id }).populate("set_course_id set_section_id");
+            if (findAssignment) {
+                return sendResponse(res, HTTP_STATUS.OK, "Assignment Found!", findAssignment)
 
+            }
+            return sendResponse(res, HTTP_STATUS.NOT_FOUND, "Assignment not found!");
+
+        } catch (error) {
+            console.log(error);
+            return sendResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, "Internal Server Error!");
+        }
+
+
+
+    }
 
 }
 export default new Student;
